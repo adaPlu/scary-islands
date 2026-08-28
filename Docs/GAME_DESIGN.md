@@ -6,7 +6,7 @@
 
 **Widow's Shore:** 12â18 minute run; drowned village, blackpine trail, sea cave, chapel, skiff. Three randomized clue locations support replayability. The Salt Bell banishes the fog briefly and enrages the Mourner.
 
-**VR interaction rules:** every critical action works one-handed; no forced camera motion; UI is world-anchored or wrist-mounted; important sounds have visual/haptic equivalents; seated reach targets remain between 0.65 m and 1.45 m.
+**VR interaction rules:** players have a floating upper body and visible arms but no legs or feet. Locomotion is driven by pulling both hands backward in alternating or simultaneous strokes. Every critical action works one-handed; no forced camera motion; UI is world-anchored or wrist-mounted; important sounds have visual/haptic equivalents; seated reach targets remain between 0.65 m and 1.45 m.
 
 **Milestone 1 definition of done:** complete loop in headset, one enemy, two inventory items, tide fail state, escape success state, comfort menu, stable 72 Hz Quest performance in the greybox.
 
