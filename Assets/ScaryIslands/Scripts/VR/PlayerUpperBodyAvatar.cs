@@ -2,18 +2,13 @@ using UnityEngine;
 
 namespace ScaryIslands.VR
 {
-    /// <summary>Keeps a floating torso beneath the headset without creating legs and guarantees every player has wings.</summary>
+    /// <summary>Keeps a floating torso beneath the headset without creating legs.</summary>
     public sealed class PlayerUpperBodyAvatar : MonoBehaviour
     {
         [SerializeField] private Transform head;
         [SerializeField] private Transform torso;
         [SerializeField, Range(0.2f, 0.8f)] private float torsoDrop = 0.48f;
         [SerializeField, Range(1f, 30f)] private float rotationSharpness = 12f;
-
-        private void Awake()
-        {
-            EnsureWings();
-        }
 
         private void LateUpdate()
         {
@@ -23,15 +18,6 @@ namespace ScaryIslands.VR
             if (flatForward.sqrMagnitude > 0.01f)
                 torso.rotation = Quaternion.Slerp(torso.rotation, Quaternion.LookRotation(flatForward),
                     1f - Mathf.Exp(-rotationSharpness * Time.deltaTime));
-        }
-
-        private void EnsureWings()
-        {
-            if (torso == null) return;
-
-            PlayerWings wings = GetComponent<PlayerWings>();
-            if (wings == null) wings = gameObject.AddComponent<PlayerWings>();
-            wings.Configure(torso);
         }
     }
 }
