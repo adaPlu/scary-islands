@@ -1,0 +1,13 @@
+{
+  "biomes": [
+    {"id":"widows-shore","name":"Widow's Shore","relic":"Salt Bell","threat":"The Mourner","hazard":"Black tide","traversal":"Skiff and flooded village","targetMinutes":15,"relicsRequired":0},
+    {"id":"abyssal-sea","name":"Abyssal Sea","relic":"Drowned Compass","threat":"The Lantern Leviathan","hazard":"Oxygen and crushing depth","traversal":"Diving bell and hand-over-hand cables","targetMinutes":18,"relicsRequired":1},
+    {"id":"dead-orbit","name":"Dead Orbit","relic":"Black Star Core","threat":"The Hollow Astronaut","hazard":"Hull breaches and decompression","traversal":"Zero-gravity grabs and magnetic boots","targetMinutes":20,"relicsRequired":2},
+    {"id":"whisper-caves","name":"Whisper Caves","relic":"Echo Skull","threat":"The Blind Broodmother","hazard":"Total darkness and cave-ins","traversal":"Climbing, crawling and echo-location","targetMinutes":17,"relicsRequired":1},
+    {"id":"red-waste","name":"Red Waste","relic":"Glass Scarab","threat":"The Sand Walker","hazard":"Heat, mirages and sandstorms","traversal":"Wind sled and buried tunnels","targetMinutes":16,"relicsRequired":2},
+    {"id":"blood-canopy","name":"Blood Canopy","relic":"Heartseed Idol","threat":"The Mimic Vine","hazard":"Poison spores and living plants","traversal":"Machete paths, vines and river raft","targetMinutes":19,"relicsRequired":3},
+    {"id":"shattered-sky","name":"Shattered Sky","relic":"Storm Anchor","threat":"The Wingless","hazard":"Falling, lightning and violent winds","traversal":"Glider, grappling hook and moving islands","targetMinutes":18,"relicsRequired":4},
+    {"id":"slime-lands","name":"Slime Lands","relic":"Royal Slime Crown","threat":"The Devouring Gel","hazard":"Corrosive floods and splitting slimes","traversal":"Bounce pads, sticky walls and dissolving bridges","targetMinutes":15,"relicsRequired":5}
+  ]
+}
+

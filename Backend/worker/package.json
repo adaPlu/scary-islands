@@ -1,0 +1,1 @@
+{"name":"scary-islands-api","private":true,"scripts":{"dev":"wrangler dev","deploy":"wrangler deploy","test":"vitest"},"devDependencies":{"wrangler":"^4.127.1","typescript":"^5.9.2","vitest":"^3.2.4","@cloudflare/workers-types":"^5.20260828.1"}}

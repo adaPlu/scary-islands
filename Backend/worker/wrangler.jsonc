@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "scary-islands-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-28",
+  "observability": { "enabled": true },
+  "d1_databases": [{ "binding": "DB", "database_name": "scary-islands", "database_id": "REPLACE_AFTER_D1_CREATE" }]
+}
+
