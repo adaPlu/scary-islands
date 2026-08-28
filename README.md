@@ -16,6 +16,8 @@ Scary Islands is a room-scale VR survival-horror game built with Unity and OpenX
 - OpenXR + XR Interaction Toolkit
 - Targets: Meta Quest (Android) and PC VR
 - Comfort defaults: snap turn, vignette, teleport, seated/standing calibration
+- Body model: floating torso and tracked arms, with no rendered legs
+- Primary locomotion: arm-swing movement using both tracked controllers
 
 Open the project in Unity, allow packages to resolve, then run **Scary Islands > Build Prototype Scene**. This creates a playable greybox scene using primitives and the included runtime scripts.
 
