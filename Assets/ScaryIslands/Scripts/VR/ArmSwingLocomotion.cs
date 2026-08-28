@@ -3,8 +3,8 @@ using UnityEngine;
 namespace ScaryIslands.VR
 {
     /// <summary>
-    /// Comfortable arm-swing locomotion for a CharacterController XR Origin.
-    /// Pull both controllers backward to move in the flattened head direction.
+    /// Arm-powered VR locomotion. Pull the hands backward to move on the ground.
+    /// Flap both winged arms downward to take off and gain altitude; spread the arms to glide.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
     public sealed class ArmSwingLocomotion : MonoBehaviour
@@ -14,13 +14,27 @@ namespace ScaryIslands.VR
         [SerializeField] private Transform leftHand;
         [SerializeField] private Transform rightHand;
 
-        [Header("Movement")]
+        [Header("Ground Movement")]
         [SerializeField, Min(0.1f)] private float speedMultiplier = 2.2f;
         [SerializeField, Min(0.1f)] private float maximumSpeed = 3.5f;
         [SerializeField, Min(0f)] private float minimumStrokeSpeed = 0.12f;
         [SerializeField, Min(0f)] private float acceleration = 10f;
         [SerializeField, Min(0f)] private float braking = 14f;
-        [SerializeField] private float gravity = -18f;
+        [SerializeField] private float groundGravity = -18f;
+
+        [Header("Wing Flight")]
+        [SerializeField, Min(0.1f)] private float minimumFlapSpeed = 0.55f;
+        [SerializeField, Min(0.1f)] private float takeoffFlapSpeed = 0.9f;
+        [SerializeField, Min(0f)] private float takeoffVelocity = 2.2f;
+        [SerializeField, Min(0f)] private float flapLiftAcceleration = 7.5f;
+        [SerializeField, Min(0f)] private float flapForwardAcceleration = 3.2f;
+        [SerializeField, Min(0.1f)] private float maximumFlightSpeed = 7f;
+        [SerializeField, Min(0.1f)] private float maximumRiseSpeed = 5.5f;
+        [SerializeField, Min(0.1f)] private float maximumFallSpeed = 7f;
+        [SerializeField] private float flightGravity = -7f;
+        [SerializeField] private float glideGravity = -2.4f;
+        [SerializeField, Min(0.2f)] private float glideArmSpan = 0.85f;
+        [SerializeField, Min(0f)] private float airDrag = 0.8f;
 
         [Header("Body")]
         [SerializeField, Range(0.8f, 2.2f)] private float standingHeight = 1.7f;
@@ -33,6 +47,10 @@ namespace ScaryIslands.VR
         private float currentSpeed;
         private float verticalSpeed;
         private bool trackingReady;
+        private bool wingsConfigured;
+        private bool isFlying;
+
+        public bool IsFlying => isFlying;
 
         private void Awake()
         {
@@ -45,11 +63,18 @@ namespace ScaryIslands.VR
         {
             trackingReady = false;
             currentSpeed = 0f;
+            verticalSpeed = 0f;
+            isFlying = false;
+            wingsConfigured = false;
         }
 
         private void Update()
         {
             if (head == null || leftHand == null || rightHand == null) return;
+
+            if (!wingsConfigured)
+                ConfigureArmWings();
+
             UpdateCapsule();
 
             if (!trackingReady)
@@ -67,6 +92,42 @@ namespace ScaryIslands.VR
             previousRight = rightHand.position;
 
             Vector3 forward = Vector3.ProjectOnPlane(head.forward, Vector3.up).normalized;
+            if (forward.sqrMagnitude < 0.01f)
+                forward = transform.forward;
+
+            float leftDown = Mathf.Max(0f, Vector3.Dot(leftVelocity, Vector3.down));
+            float rightDown = Mathf.Max(0f, Vector3.Dot(rightVelocity, Vector3.down));
+            bool bothArmsFlapping = leftDown >= minimumFlapSpeed && rightDown >= minimumFlapSpeed;
+            float flapStrength = bothArmsFlapping ? (leftDown + rightDown) * 0.5f : 0f;
+
+            bool grounded = controller.isGrounded;
+            if (grounded && verticalSpeed < 0f)
+                verticalSpeed = -1f;
+
+            if (grounded && flapStrength >= takeoffFlapSpeed)
+            {
+                isFlying = true;
+                verticalSpeed = Mathf.Max(verticalSpeed, takeoffVelocity);
+            }
+            else if (!grounded && bothArmsFlapping)
+            {
+                isFlying = true;
+            }
+            else if (grounded && verticalSpeed <= 0f)
+            {
+                isFlying = false;
+            }
+
+            if (isFlying)
+                UpdateFlight(forward, flapStrength, dt);
+            else
+                UpdateGroundMovement(forward, leftVelocity, rightVelocity, dt);
+
+            controller.Move((forward * currentSpeed + Vector3.up * verticalSpeed) * dt);
+        }
+
+        private void UpdateGroundMovement(Vector3 forward, Vector3 leftVelocity, Vector3 rightVelocity, float dt)
+        {
             float leftPull = Mathf.Max(0f, -Vector3.Dot(leftVelocity, forward));
             float rightPull = Mathf.Max(0f, -Vector3.Dot(rightVelocity, forward));
             float stroke = (leftPull + rightPull) * 0.5f;
@@ -76,8 +137,40 @@ namespace ScaryIslands.VR
 
             float rate = targetSpeed > currentSpeed ? acceleration : braking;
             currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, rate * dt);
-            verticalSpeed = controller.isGrounded && verticalSpeed < 0f ? -1f : verticalSpeed + gravity * dt;
-            controller.Move((forward * currentSpeed + Vector3.up * verticalSpeed) * dt);
+            verticalSpeed += groundGravity * dt;
+        }
+
+        private void UpdateFlight(Vector3 forward, float flapStrength, float dt)
+        {
+            bool gliding = Vector3.Distance(leftHand.position, rightHand.position) >= glideArmSpan;
+
+            if (flapStrength > 0f)
+            {
+                verticalSpeed += flapStrength * flapLiftAcceleration * dt;
+                currentSpeed += flapStrength * flapForwardAcceleration * dt;
+            }
+            else
+            {
+                currentSpeed = Mathf.MoveTowards(currentSpeed, 0f, airDrag * dt);
+            }
+
+            float activeGravity = gliding ? glideGravity : flightGravity;
+            verticalSpeed += activeGravity * dt;
+
+            currentSpeed = Mathf.Clamp(currentSpeed, 0f, maximumFlightSpeed);
+            verticalSpeed = Mathf.Clamp(verticalSpeed, -maximumFallSpeed, maximumRiseSpeed);
+        }
+
+        private void ConfigureArmWings()
+        {
+            if (leftHand == null || rightHand == null) return;
+
+            PlayerWings wings = GetComponent<PlayerWings>();
+            if (wings == null)
+                wings = gameObject.AddComponent<PlayerWings>();
+
+            wings.Configure(leftHand, rightHand);
+            wingsConfigured = wings.IsConfigured;
         }
 
         private void UpdateCapsule()
@@ -101,4 +194,3 @@ namespace ScaryIslands.VR
         }
     }
 }
-
