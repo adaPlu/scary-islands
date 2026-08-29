@@ -5,7 +5,7 @@ Scary Islands is a room-scale VR survival-horror game built with Unity and OpenX
 ## Prototype loop
 
 1. Arrive with a **free starter gun** attached to the tracked right hand.
-2. Shoot monsters, follow the audio beacons, and recover the chapel key and Salt Bell.
+2. Shoot invincible monsters to build a Dot streak, follow the audio beacons, and recover the chapel key and Salt Bell.
 3. Flap the arm-mounted wings to fly and glide around the island.
 4. Ring the Salt Bell at the drowned chapel.
 5. Return to the skiff before the tide timer expires.
@@ -15,7 +15,8 @@ Scary Islands is a room-scale VR survival-horror game built with Unity and OpenX
 
 - Every player starts with a free automatic starter gun.
 - Bind `StarterGun.BeginFire` and `StarterGun.EndFire` to the XR trigger.
-- Monsters use `MonsterHealth` and can be killed by gunfire.
+- Monsters use `MonsterHealth` and are **invincible by default**.
+- Gunfire still registers valid monster hits, but monster health does not decrease and monsters cannot die.
 - A continuous monster-hit streak earns increasing Dots:
   - first full second hitting a monster: **+1 Dot**
   - second consecutive second: **+2 Dots**
@@ -38,7 +39,7 @@ Scary Islands is a room-scale VR survival-horror game built with Unity and OpenX
 - Gliding: spread both arms apart in the air to reduce gravity and glide farther
 - Currency: **Dots**, stored persistently with a 100-Dot starter balance
 
-Open the project in Unity, allow packages to resolve, then run **Scary Islands > Build Prototype Scene**. The greybox includes the Pet Shop and three shootable monster targets.
+Open the project in Unity, allow packages to resolve, then run **Scary Islands > Build Prototype Scene**. The greybox includes the Pet Shop and three invincible shootable monster targets.
 
 ## Pet Shop
 
