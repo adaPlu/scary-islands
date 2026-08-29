@@ -3,19 +3,14 @@ using UnityEngine;
 
 namespace ScaryIslands.Combat
 {
-    /// <summary>
-    /// Shared monster hit component. Monsters are invincible by default:
-    /// gunfire registers valid hits for Dot streaks but never removes health.
-    /// </summary>
+    /// <summary>Simple shared health component for shootable monsters.</summary>
     public sealed class MonsterHealth : MonoBehaviour
     {
         [SerializeField, Min(1f)] private float maximumHealth = 100f;
-        [SerializeField] private bool invincible = true;
-        [SerializeField] private bool destroyOnDeath = false;
+        [SerializeField] private bool destroyOnDeath = true;
 
         public float CurrentHealth { get; private set; }
-        public bool IsAlive => true;
-        public bool IsInvincible => invincible;
+        public bool IsAlive => CurrentHealth > 0f;
 
         public event Action<MonsterHealth, float> Damaged;
         public event Action<MonsterHealth> Died;
@@ -27,16 +22,7 @@ namespace ScaryIslands.Combat
 
         public bool TakeDamage(float damage)
         {
-            if (damage <= 0f) return false;
-
-            if (invincible)
-            {
-                // Count this as a valid monster hit so the gun's sustained-hit
-                // Dot streak still works, while health remains unchanged.
-                CurrentHealth = maximumHealth;
-                Damaged?.Invoke(this, 0f);
-                return true;
-            }
+            if (!IsAlive || damage <= 0f) return false;
 
             float applied = Mathf.Min(CurrentHealth, damage);
             CurrentHealth -= applied;
@@ -51,11 +37,6 @@ namespace ScaryIslands.Combat
             }
 
             return true;
-        }
-
-        public void RestoreFullHealth()
-        {
-            CurrentHealth = maximumHealth;
         }
     }
 }
