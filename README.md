@@ -1,15 +1,29 @@
 # Scary Islands
 
-Scary Islands is a room-scale VR survival-horror game built with Unity and OpenXR. The first playable island, **Widow's Shore**, asks the player to recover and ring the Salt Bell before the black tide consumes the island while a sound-hunting creature called the Mourner stalks the fog.
+Scary Islands is a room-scale VR survival-horror game built with Unity and OpenXR. The first playable island, **Widow's Shore**, asks the player to recover and ring the Salt Bell before the black tide consumes the island while monsters stalk the fog.
 
 ## Prototype loop
 
-1. Arrive by skiff and take the lantern.
-2. Follow three audio beacons through the fog.
-3. Collect the chapel key and Salt Bell.
-4. Ring the bell at the drowned chapel.
+1. Arrive with a **free starter gun** attached to the tracked right hand.
+2. Shoot monsters, follow the audio beacons, and recover the chapel key and Salt Bell.
+3. Flap the arm-mounted wings to fly and glide around the island.
+4. Ring the Salt Bell at the drowned chapel.
 5. Return to the skiff before the tide timer expires.
-6. Earn **Dots** and spend them on companion pets between runs.
+6. Spend earned **Dots** on 10-Dot pet eggs.
+
+## Combat and Dots
+
+- Every player starts with a free automatic starter gun.
+- Bind `StarterGun.BeginFire` and `StarterGun.EndFire` to the XR trigger.
+- Monsters use `MonsterHealth` and can be killed by gunfire.
+- A continuous monster-hit streak earns increasing Dots:
+  - first full second hitting a monster: **+1 Dot**
+  - second consecutive second: **+2 Dots**
+  - third consecutive second: **+3 Dots**
+  - and so on
+- Missing/stopping long enough to break the hit streak resets the next reward to +1.
+- Successful escapes still award 25 Dots.
+- Dot balance persists locally.
 
 ## Unity setup
 
@@ -23,14 +37,12 @@ Scary Islands is a room-scale VR survival-horror game built with Unity and OpenX
 - Flight: flap both arms downward to take off, climb, and accelerate forward
 - Gliding: spread both arms apart in the air to reduce gravity and glide farther
 - Currency: **Dots**, stored persistently with a 100-Dot starter balance
-- Run reward: successful escapes award 25 Dots
-- Pet Shop: buy and equip persistent companion pets using Dots
 
-Open the project in Unity, allow packages to resolve, then run **Scary Islands > Build Prototype Scene**. This creates the playable greybox and places a Pet Shop terminal near the starting area.
+Open the project in Unity, allow packages to resolve, then run **Scary Islands > Build Prototype Scene**. The greybox includes the Pet Shop and three shootable monster targets.
 
 ## Pet Shop
 
-The initial catalog contains Fog Moth, Lantern Crab, Grave Crow, Mire Slime, Storm Bat, and Little Leviathan. Purchases and the equipped pet persist locally. Equipped pets follow the player using lightweight prototype geometry until final pet art is added.
+Every pet is purchased as a **10-Dot egg**. The current eggs hatch Fog Moth, Lantern Crab, Grave Crow, Mire Slime, Storm Bat, or Little Leviathan. Purchases and equipped pets persist locally, and equipped pets follow the player using prototype geometry until final models are added.
 
 ## Cloudflare backend
 
