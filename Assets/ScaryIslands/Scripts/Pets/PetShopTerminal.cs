@@ -4,7 +4,8 @@ using ScaryIslands.Economy;
 namespace ScaryIslands.Pets
 {
     /// <summary>
-    /// World-space prototype pet shop. Public actions can be bound to XR interactables.
+    /// World-space prototype pet shop. Every selected pet is purchased as a 10-Dot egg.
+    /// Public actions can be bound to XR interactables.
     /// </summary>
     public sealed class PetShopTerminal : MonoBehaviour
     {
@@ -97,20 +98,21 @@ namespace ScaryIslands.Pets
             int dots = DotWallet.Instance != null ? DotWallet.Instance.Balance : 0;
             if (pet == null)
             {
-                display.text = "PET SHOP\nDOTS: " + dots + "\nNo pets available";
+                display.text = "PET SHOP\nDOTS: " + dots + "\nNo pet eggs available";
                 return;
             }
 
             bool owned = PetShop.Instance.IsOwned(pet.id);
             bool equipped = PetShop.Instance.EquippedPetId == pet.id;
-            string status = equipped ? "EQUIPPED" : owned ? "OWNED — EQUIP" : "BUY — " + pet.costDots + " DOTS";
+            string status = equipped ? "EQUIPPED" : owned ? "HATCHED — EQUIP" : "BUY EGG — 10 DOTS";
+
             display.text =
                 "PET SHOP\n" +
                 "DOTS: " + dots + "\n\n" +
-                pet.name.ToUpperInvariant() + "\n" +
+                pet.name.ToUpperInvariant() + " EGG\n" +
                 pet.species + "\n" +
                 status + "\n\n" +
-                "Use shop controls to browse";
+                "Every pet egg costs 10 Dots";
         }
     }
 }
