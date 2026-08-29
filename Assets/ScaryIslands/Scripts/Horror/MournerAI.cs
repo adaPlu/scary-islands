@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using ScaryIslands.Combat;
+using ScaryIslands.Multiplayer;
 
 namespace ScaryIslands.Horror
 {
@@ -43,7 +44,17 @@ namespace ScaryIslands.Horror
 
         private void Update()
         {
+            MultiplayerSession multiplayer = MultiplayerSession.Instance;
+            if (multiplayer != null && multiplayer.IsActive && !multiplayer.IsServer)
+            {
+                if (agent.enabled && !agent.isStopped)
+                    agent.isStopped = true;
+                return;
+            }
+
             if (health != null && !health.IsAlive) return;
+            if (agent.enabled && agent.isStopped)
+                agent.isStopped = false;
 
             if (CanSeePlayer())
             {
@@ -63,6 +74,8 @@ namespace ScaryIslands.Horror
 
         private void Hear(NoiseEvent e)
         {
+            MultiplayerSession multiplayer = MultiplayerSession.Instance;
+            if (multiplayer != null && multiplayer.IsActive && !multiplayer.IsServer) return;
             if (health != null && !health.IsAlive) return;
             if (Vector3.Distance(transform.position, e.Position) > Mathf.Lerp(4f, 28f, e.Loudness)) return;
 
@@ -91,7 +104,7 @@ namespace ScaryIslands.Horror
 
         private void OnDied(MonsterHealth _)
         {
-            if (agent != null)
+            if (agent != null && agent.enabled)
                 agent.isStopped = true;
         }
     }
