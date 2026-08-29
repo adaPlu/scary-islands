@@ -57,6 +57,9 @@ namespace ScaryIslands.VR
         private bool isFlying;
 
         public bool IsFlying => isFlying;
+        public Transform Head => head;
+        public Transform LeftHand => leftHand;
+        public Transform RightHand => rightHand;
 
         private void Awake()
         {
