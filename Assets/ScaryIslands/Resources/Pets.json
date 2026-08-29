@@ -1,10 +1,10 @@
 {
   "pets": [
-    {"id":"fog-moth","name":"Fog Moth","species":"Moth","description":"A pale moth that circles your shoulder and glows near cursed objects.","costDots":40},
-    {"id":"lantern-crab","name":"Lantern Crab","species":"Crab","description":"A tiny spectral crab carrying a cold blue lantern.","costDots":75},
-    {"id":"grave-crow","name":"Grave Crow","species":"Crow","description":"A watchful crow that never seems to blink.","costDots":110},
-    {"id":"mire-slime","name":"Mire Slime","species":"Slime","description":"A cheerful little swamp blob that bounces through the fog.","costDots":150},
-    {"id":"storm-bat","name":"Storm Bat","species":"Bat","description":"A charged bat that crackles softly before bad weather.","costDots":225},
-    {"id":"little-leviathan","name":"Little Leviathan","species":"Sea Spirit","description":"A miniature abyssal spirit that swims through the air beside you.","costDots":400}
+    {"id":"fog-moth","name":"Fog Moth","species":"Moth","description":"A pale moth that circles your shoulder and glows near cursed objects.","costDots":10},
+    {"id":"lantern-crab","name":"Lantern Crab","species":"Crab","description":"A tiny spectral crab carrying a cold blue lantern.","costDots":10},
+    {"id":"grave-crow","name":"Grave Crow","species":"Crow","description":"A watchful crow that never seems to blink.","costDots":10},
+    {"id":"mire-slime","name":"Mire Slime","species":"Slime","description":"A cheerful little swamp blob that bounces through the fog.","costDots":10},
+    {"id":"storm-bat","name":"Storm Bat","species":"Bat","description":"A charged bat that crackles softly before bad weather.","costDots":10},
+    {"id":"little-leviathan","name":"Little Leviathan","species":"Sea Spirit","description":"A miniature abyssal spirit that swims through the air beside you.","costDots":10}
   ]
 }
