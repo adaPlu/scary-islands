@@ -143,11 +143,12 @@ namespace ScaryIslands.Multiplayer
 
         public void Disconnect()
         {
+            UnregisterHandlers();
+
             if (manager != null && manager.IsListening)
                 manager.Shutdown();
 
             ClearRemotePlayers();
-            UnregisterHandlers();
         }
 
         public bool RequestMonsterDamage(MonsterHealth monster, float damage)
@@ -199,6 +200,7 @@ namespace ScaryIslands.Multiplayer
             manager.NetworkConfig.NetworkTransport = transport;
             manager.NetworkConfig.PlayerPrefab = null;
             manager.NetworkConfig.EnableSceneManagement = false;
+            manager.NetworkConfig.ConnectionApproval = true;
             manager.OnClientConnectedCallback += OnClientConnected;
             manager.OnClientDisconnectCallback += OnClientDisconnected;
         }
@@ -257,7 +259,7 @@ namespace ScaryIslands.Multiplayer
                 }
             }
 
-            if (manager != null && !manager.IsServer && clientId == manager.LocalClientId)
+            if (manager != null && !manager.IsServer)
                 ClearRemotePlayers();
         }
 
