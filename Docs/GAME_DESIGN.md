@@ -8,7 +8,11 @@
 
 **VR interaction rules:** players have a floating upper body and visible arms but no legs or feet. Every player has a wing attached to each tracked arm. On the ground, pulling both hands backward drives locomotion. In the air, flapping both arms downward creates lift and forward thrust; spreading the arms creates a lower-gravity glide. Every critical action works one-handed; no forced camera motion; UI is world-anchored or wrist-mounted; important sounds have visual/haptic equivalents; seated reach targets remain between 0.65 m and 1.45 m.
 
-**Milestone 1 definition of done:** complete loop in headset, one enemy, two inventory items, tide fail state, escape success state, functional arm-wing takeoff and gliding, comfort menu, stable 72 Hz Quest performance in the greybox.
+**Economy:** the game uses one soft currency called **Dots**. New players start with 100 Dots, and a successful escape awards 25 Dots. Dots buy companion pets in the Pet Shop. Pet purchases and the equipped pet persist between runs.
+
+**Pet Shop:** the first catalog is Fog Moth (40 Dots), Lantern Crab (75), Grave Crow (110), Mire Slime (150), Storm Bat (225), and Little Leviathan (400). Pets are cosmetic companions and must not provide pay-to-win combat or progression advantages.
+
+**Milestone 1 definition of done:** complete loop in headset, one enemy, two inventory items, tide fail state, escape success state, functional arm-wing takeoff and gliding, persistent Dots wallet, working pet purchase/equip flow, comfort menu, stable 72 Hz Quest performance in the greybox.
 
 ## Archipelago roadmap
 
