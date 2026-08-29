@@ -4,6 +4,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using ScaryIslands.Combat;
 using ScaryIslands.Game;
+using ScaryIslands.Multiplayer;
 using ScaryIslands.Pets;
 using ScaryIslands.World;
 
@@ -42,6 +43,11 @@ namespace ScaryIslands.Editor
             var spawn = new GameObject("XR Origin Spawn");
             spawn.transform.position = new Vector3(0, 1, -12);
 
+            var multiplayer = new GameObject("Multiplayer Terminal");
+            multiplayer.transform.position = new Vector3(-4, 0, -9);
+            multiplayer.transform.rotation = Quaternion.Euler(0, 160, 0);
+            multiplayer.AddComponent<MultiplayerTerminal>();
+
             var key = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             key.name = "Chapel Key";
             key.transform.position = new Vector3(-9, 1, 3);
@@ -74,7 +80,7 @@ namespace ScaryIslands.Editor
             }
 
             EditorSceneManager.SaveScene(scene, "Assets/ScaryIslands/Scenes/WidowsShore.unity");
-            Debug.Log("Scary Islands prototype created. Every player gets a free starter gun on the right hand. Sustained monster hits earn increasing Dots. Pet eggs cost 10 Dots each.");
+            Debug.Log("Scary Islands prototype created with 2-4 player direct-IP/LAN multiplayer, synced VR avatars, shared monsters, wings, guns, Dots, and pets.");
         }
     }
 }
