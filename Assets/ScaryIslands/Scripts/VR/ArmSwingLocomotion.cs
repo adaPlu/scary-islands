@@ -1,10 +1,12 @@
 using UnityEngine;
+using ScaryIslands.Combat;
 
 namespace ScaryIslands.VR
 {
     /// <summary>
     /// Arm-powered VR locomotion. Pull the hands backward to move on the ground.
     /// Flap both winged arms downward to take off and gain altitude; spread the arms to glide.
+    /// Every player also receives a free starter gun on the tracked right hand.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
     public sealed class ArmSwingLocomotion : MonoBehaviour
@@ -36,6 +38,9 @@ namespace ScaryIslands.VR
         [SerializeField, Min(0.2f)] private float glideArmSpan = 0.85f;
         [SerializeField, Min(0f)] private float airDrag = 0.8f;
 
+        [Header("Starter Gun")]
+        [SerializeField] private bool giveFreeStarterGun = true;
+
         [Header("Body")]
         [SerializeField, Range(0.8f, 2.2f)] private float standingHeight = 1.7f;
         [SerializeField, Range(0.1f, 0.8f)] private float bodyRadius = 0.25f;
@@ -48,6 +53,7 @@ namespace ScaryIslands.VR
         private float verticalSpeed;
         private bool trackingReady;
         private bool wingsConfigured;
+        private bool gunConfigured;
         private bool isFlying;
 
         public bool IsFlying => isFlying;
@@ -66,6 +72,7 @@ namespace ScaryIslands.VR
             verticalSpeed = 0f;
             isFlying = false;
             wingsConfigured = false;
+            gunConfigured = false;
         }
 
         private void Update()
@@ -74,6 +81,8 @@ namespace ScaryIslands.VR
 
             if (!wingsConfigured)
                 ConfigureArmWings();
+            if (!gunConfigured)
+                ConfigureStarterGun();
 
             UpdateCapsule();
 
@@ -163,14 +172,35 @@ namespace ScaryIslands.VR
 
         private void ConfigureArmWings()
         {
-            if (leftHand == null || rightHand == null) return;
-
             PlayerWings wings = GetComponent<PlayerWings>();
             if (wings == null)
                 wings = gameObject.AddComponent<PlayerWings>();
 
             wings.Configure(leftHand, rightHand);
             wingsConfigured = wings.IsConfigured;
+        }
+
+        private void ConfigureStarterGun()
+        {
+            if (!giveFreeStarterGun)
+            {
+                gunConfigured = true;
+                return;
+            }
+
+            Transform existing = rightHand.Find("Free Starter Gun");
+            if (existing != null)
+            {
+                gunConfigured = true;
+                return;
+            }
+
+            GameObject gunObject = new GameObject("Free Starter Gun");
+            gunObject.transform.SetParent(rightHand, false);
+            gunObject.transform.localPosition = Vector3.zero;
+            gunObject.transform.localRotation = Quaternion.identity;
+            gunObject.AddComponent<StarterGun>();
+            gunConfigured = true;
         }
 
         private void UpdateCapsule()
