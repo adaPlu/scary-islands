@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using ScaryIslands.Combat;
 using ScaryIslands.Game;
 using ScaryIslands.Pets;
 using ScaryIslands.World;
@@ -56,8 +57,24 @@ namespace ScaryIslands.Editor
             petShop.transform.rotation = Quaternion.Euler(0, 205, 0);
             petShop.AddComponent<PetShopTerminal>();
 
+            Vector3[] monsterPositions =
+            {
+                new Vector3(-6f, 1f, -2f),
+                new Vector3(4f, 1f, 5f),
+                new Vector3(11f, 1f, -1f)
+            };
+
+            for (int i = 0; i < monsterPositions.Length; i++)
+            {
+                GameObject monster = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+                monster.name = "Shootable Monster " + (i + 1);
+                monster.transform.position = monsterPositions[i];
+                monster.transform.localScale = new Vector3(1.1f, 1.6f, 1.1f);
+                monster.AddComponent<MonsterHealth>();
+            }
+
             EditorSceneManager.SaveScene(scene, "Assets/ScaryIslands/Scenes/WidowsShore.unity");
-            Debug.Log("Scary Islands prototype scene created. Add an XR Origin prefab at XR Origin Spawn. The Pet Shop is placed near the starting area and uses Dots.");
+            Debug.Log("Scary Islands prototype created. Every player gets a free starter gun on the right hand. Sustained monster hits earn increasing Dots. Pet eggs cost 10 Dots each.");
         }
     }
 }
