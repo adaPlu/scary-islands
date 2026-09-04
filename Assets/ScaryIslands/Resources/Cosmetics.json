@@ -1,0 +1,14 @@
+{
+  "cosmetics": [
+    {"id":"fog-mask","name":"Fog Mask","slot":"face","rarity":"common","minDots":15,"maxDots":35},
+    {"id":"bone-crown","name":"Bone Crown","slot":"head","rarity":"rare","minDots":40,"maxDots":80},
+    {"id":"storm-halo","name":"Storm Halo","slot":"head","rarity":"epic","minDots":90,"maxDots":150},
+    {"id":"mire-paint","name":"Mire War Paint","slot":"face","rarity":"common","minDots":12,"maxDots":30},
+    {"id":"lantern-eyes","name":"Lantern Eyes","slot":"eyes","rarity":"rare","minDots":45,"maxDots":90},
+    {"id":"void-visor","name":"Void Visor","slot":"face","rarity":"epic","minDots":100,"maxDots":170},
+    {"id":"red-waste-wrap","name":"Red Waste Wrap","slot":"head","rarity":"common","minDots":18,"maxDots":40},
+    {"id":"slime-crownlet","name":"Slime Crownlet","slot":"head","rarity":"rare","minDots":50,"maxDots":95},
+    {"id":"mourner-veil","name":"Mourner Veil","slot":"face","rarity":"epic","minDots":110,"maxDots":180},
+    {"id":"black-tide-aura","name":"Black Tide Aura","slot":"aura","rarity":"legendary","minDots":200,"maxDots":350}
+  ]
+}
