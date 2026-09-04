@@ -6,6 +6,7 @@ using ScaryIslands.Combat;
 using ScaryIslands.Game;
 using ScaryIslands.Multiplayer;
 using ScaryIslands.Pets;
+using ScaryIslands.UI;
 using ScaryIslands.World;
 
 namespace ScaryIslands.Editor
@@ -20,6 +21,7 @@ namespace ScaryIslands.Editor
 
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             new GameObject("Run State").AddComponent<RunState>();
+            new GameObject("Settings System").AddComponent<SettingsMenu>();
 
             var light = new GameObject("Moonlight").AddComponent<Light>();
             light.type = LightType.Directional;
@@ -80,7 +82,7 @@ namespace ScaryIslands.Editor
             }
 
             EditorSceneManager.SaveScene(scene, "Assets/ScaryIslands/Scenes/WidowsShore.unity");
-            Debug.Log("Scary Islands prototype created with 2-4 player direct-IP/LAN multiplayer, synced VR avatars, shared monsters, wings, guns, Dots, and pets.");
+            Debug.Log("Scary Islands prototype created with multiplayer, synced VR avatars, shared monsters, wings, guns, Dots, pets, and persistent VR settings.");
         }
     }
 }
