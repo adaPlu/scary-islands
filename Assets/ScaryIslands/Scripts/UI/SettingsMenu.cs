@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using ScaryIslands.VR;
 
 namespace ScaryIslands.UI
@@ -17,6 +19,7 @@ namespace ScaryIslands.UI
         [SerializeField] private PlayerWings wings;
         [SerializeField] private AudioMixer audioMixer;
         [SerializeField] private GameObject menuRoot;
+        [SerializeField] private Volume postProcessingVolume;
 
         public float MasterVolume { get; private set; } = 1f;
         public float MusicVolume { get; private set; } = 0.8f;
@@ -29,6 +32,7 @@ namespace ScaryIslands.UI
         public bool SnapTurn { get; private set; } = true;
         public bool ComfortVignetteEnabled { get; private set; } = true;
         public bool FlightEnabled { get; private set; } = true;
+        public bool BloomEnabled { get; private set; } = true;
         public bool LeftHanded { get; private set; }
         public bool Subtitles { get; private set; } = true;
         public bool HighContrast { get; private set; }
@@ -71,6 +75,7 @@ namespace ScaryIslands.UI
         public void SetSnapTurn(bool value) { SnapTurn = value; }
         public void SetComfortVignetteEnabled(bool value) { ComfortVignetteEnabled = value; }
         public void SetFlightEnabled(bool value) { FlightEnabled = value; ApplyMovement(); }
+        public void SetBloomEnabled(bool value) { BloomEnabled = value; ApplyVisuals(); }
         public void SetLeftHanded(bool value) { LeftHanded = value; }
         public void SetSubtitles(bool value) { Subtitles = value; }
         public void SetHighContrast(bool value) { HighContrast = value; }
@@ -89,6 +94,7 @@ namespace ScaryIslands.UI
             SnapTurn = true;
             ComfortVignetteEnabled = true;
             FlightEnabled = true;
+            BloomEnabled = true;
             LeftHanded = false;
             Subtitles = true;
             HighContrast = false;
@@ -110,6 +116,7 @@ namespace ScaryIslands.UI
             PlayerPrefs.SetInt(Prefix + "snapTurn", SnapTurn ? 1 : 0);
             PlayerPrefs.SetInt(Prefix + "vignetteEnabled", ComfortVignetteEnabled ? 1 : 0);
             PlayerPrefs.SetInt(Prefix + "flightEnabled", FlightEnabled ? 1 : 0);
+            PlayerPrefs.SetInt(Prefix + "bloomEnabled", BloomEnabled ? 1 : 0);
             PlayerPrefs.SetInt(Prefix + "leftHanded", LeftHanded ? 1 : 0);
             PlayerPrefs.SetInt(Prefix + "subtitles", Subtitles ? 1 : 0);
             PlayerPrefs.SetInt(Prefix + "highContrast", HighContrast ? 1 : 0);
@@ -130,6 +137,7 @@ namespace ScaryIslands.UI
             SnapTurn = PlayerPrefs.GetInt(Prefix + "snapTurn", 1) == 1;
             ComfortVignetteEnabled = PlayerPrefs.GetInt(Prefix + "vignetteEnabled", 1) == 1;
             FlightEnabled = PlayerPrefs.GetInt(Prefix + "flightEnabled", 1) == 1;
+            BloomEnabled = PlayerPrefs.GetInt(Prefix + "bloomEnabled", 1) == 1;
             LeftHanded = PlayerPrefs.GetInt(Prefix + "leftHanded", 0) == 1;
             Subtitles = PlayerPrefs.GetInt(Prefix + "subtitles", 1) == 1;
             HighContrast = PlayerPrefs.GetInt(Prefix + "highContrast", 0) == 1;
@@ -165,6 +173,15 @@ namespace ScaryIslands.UI
         private void ApplyVisuals()
         {
             RenderSettings.ambientIntensity = Brightness;
+
+            if (postProcessingVolume == null)
+                postProcessingVolume = FindFirstObjectByType<Volume>();
+
+            if (postProcessingVolume != null && postProcessingVolume.profile != null &&
+                postProcessingVolume.profile.TryGet(out Bloom bloom))
+            {
+                bloom.active = BloomEnabled;
+            }
         }
 
         private static float LinearToDb(float linear)
