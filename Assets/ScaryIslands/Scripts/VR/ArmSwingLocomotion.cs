@@ -51,6 +51,7 @@ namespace ScaryIslands.VR
         private Vector3 previousRight;
         private float currentSpeed;
         private float verticalSpeed;
+        private float settingsSpeedMultiplier = 1f;
         private bool trackingReady;
         private bool wingsConfigured;
         private bool gunConfigured;
@@ -60,6 +61,11 @@ namespace ScaryIslands.VR
         public Transform Head => head;
         public Transform LeftHand => leftHand;
         public Transform RightHand => rightHand;
+
+        public void SetSettingsSpeedMultiplier(float value)
+        {
+            settingsSpeedMultiplier = Mathf.Clamp(value, 0.25f, 2f);
+        }
 
         private void Awake()
         {
@@ -144,7 +150,7 @@ namespace ScaryIslands.VR
             float rightPull = Mathf.Max(0f, -Vector3.Dot(rightVelocity, forward));
             float stroke = (leftPull + rightPull) * 0.5f;
             float targetSpeed = stroke >= minimumStrokeSpeed
-                ? Mathf.Min(stroke * speedMultiplier, maximumSpeed)
+                ? Mathf.Min(stroke * speedMultiplier * settingsSpeedMultiplier, maximumSpeed * settingsSpeedMultiplier)
                 : 0f;
 
             float rate = targetSpeed > currentSpeed ? acceleration : braking;
