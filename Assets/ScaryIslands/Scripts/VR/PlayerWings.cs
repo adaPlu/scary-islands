@@ -17,8 +17,12 @@ namespace ScaryIslands.VR
         private Transform leftWing;
         private Transform rightWing;
         private Material generatedMaterial;
+        private bool flightEnabled = true;
+        private float settingsFlightMultiplier = 1f;
 
         public bool IsConfigured => leftWing != null && rightWing != null;
+        public bool FlightEnabled => flightEnabled;
+        public float SettingsFlightMultiplier => settingsFlightMultiplier;
 
         public void Configure(Transform trackedLeftArm, Transform trackedRightArm)
         {
@@ -27,9 +31,21 @@ namespace ScaryIslands.VR
             EnsureWings();
         }
 
+        public void SetFlightEnabled(bool value)
+        {
+            flightEnabled = value;
+            SetWingVisibility(value);
+        }
+
+        public void SetSettingsFlightMultiplier(float value)
+        {
+            settingsFlightMultiplier = Mathf.Clamp(value, 0.25f, 2f);
+        }
+
         private void Awake()
         {
             EnsureWings();
+            SetWingVisibility(flightEnabled);
         }
 
         private void EnsureWings()
@@ -41,6 +57,13 @@ namespace ScaryIslands.VR
 
             leftWing = EnsureArmWing(leftArm, "Left Arm Wing", -1f);
             rightWing = EnsureArmWing(rightArm, "Right Arm Wing", 1f);
+            SetWingVisibility(flightEnabled);
+        }
+
+        private void SetWingVisibility(bool visible)
+        {
+            if (leftWing != null) leftWing.gameObject.SetActive(visible);
+            if (rightWing != null) rightWing.gameObject.SetActive(visible);
         }
 
         private Transform EnsureArmWing(Transform arm, string wingName, float side)
