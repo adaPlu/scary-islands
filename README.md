@@ -77,3 +77,7 @@ The editable experience boards live in [Figma](https://www.figma.com/design/PehL
 ## Planned maps
 
 Widow's Shore, Abyssal Sea, Dead Orbit, Whisper Caves, Red Waste, Blood Canopy, Shattered Sky, and Slime Lands. Runtime metadata is stored in `Assets/ScaryIslands/Resources/Biomes.json` so map selection and unlock requirements remain data-driven.
+
+## License
+
+Original project source code is licensed under the [MIT License](LICENSE). The separate [LICENSE-SCOPE.md](LICENSE-SCOPE.md) clarifies exclusions for personal or third-party materials.
